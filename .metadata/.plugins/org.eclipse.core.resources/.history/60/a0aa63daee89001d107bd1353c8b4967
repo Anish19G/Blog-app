@@ -1,0 +1,52 @@
+package com.example.demo.services.impl;
+
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.demo.repositories.CategoryRepo;
+import com.example.demo.entities.Category;
+import com.example.demo.payloads.CategoryDto;
+import com.example.demo.services.CategoryService;
+
+public class CategoryServiceImpl implements CategoryService{
+
+	@Autowired
+	private CategoryDto categoryRepo;
+	
+	@Autowired
+	private ModelMapper modelMapper;
+	@Override
+	public CategoryService createCategory(CategoryDto categoryDto) {
+		Category cat = this.modelMapper.map(categoryDto, Category.class);
+		
+		return null;
+	}
+
+	@Override
+	public CategoryService updateCategory(CategoryDto categoryDto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteCategory(Integer categoryId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public CategoryDto getCategory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<CategoryDto> getCategories() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+
+}

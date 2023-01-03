@@ -1,0 +1,14 @@
+package com.example.demo.exceptions;
+
+public class ResourceNotFoundException {
+	String ResoureName;
+	String fieldName;
+	long fieldValue;
+	public ResourceNotFoundException(String resourceName, String fieldName, long fieldValue) {
+		super(String.format("%s not found with %s : %1", resourceName, fieldName, fieldValue));
+		ResoureName = resourceName;
+		this.fieldName = fieldName;
+		this.fieldValue = fieldValue;
+	} 
+
+}

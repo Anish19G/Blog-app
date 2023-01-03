@@ -1,0 +1,15 @@
+package com.example.demo.payloads;
+
+import java.util.Date;
+
+import com.example.demo.entities.Category;
+import com.example.demo.entities.User;
+
+public class PostDto {
+	private String title;
+	private String content;
+	private String imageName;
+	private Date addedDate;
+	private Category category;
+	private User user;
+}

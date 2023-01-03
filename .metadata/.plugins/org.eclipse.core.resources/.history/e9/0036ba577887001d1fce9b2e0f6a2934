@@ -1,0 +1,66 @@
+package com.example.demo.services.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.demo.payloads.UserDto;
+import com.example.demo.repositories.UserRepo;
+import com.example.demo.services.UserService;
+import com.example.demo.entities.*;
+
+public class UserServiceimpl implements UserService {
+
+	@Autowired
+	private UserRepo userRepo;
+	@Override
+	public UserDto createUser(UserDto user) {
+		this.userRepo.save(user)
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UserDto updateUser(UserDto user, Integer userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UserDto getUserById(Integer userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<UserDto> getAllUsers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteUser(Integer userId) {
+		// TODO Auto-generated method stub
+
+	}
+	
+	private User dtoToUser(UserDto userDto) {
+		User user = new User();
+		user.setId(userDto.getId());
+		user.setName(userDto.getEmail());
+		user.setAbout(userDto.getAbout());
+		user.setPassword(userDto.getPassword());
+		return user;
+	}
+	
+	public UserDto userToDto(User user) {
+		UserDto userDto = new UserDto();
+		userDto.setId(user.getId());
+		userDto.setName(user.getName());
+		userDto.setEmail(user.getEmail());
+		userDto.setPassword(user.getPassword());
+		userDto.setAbout(user.getAbout());
+		return userDto;
+	}
+
+}

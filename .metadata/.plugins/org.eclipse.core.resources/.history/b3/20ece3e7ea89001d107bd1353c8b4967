@@ -1,0 +1,19 @@
+package com.example.demo.services;
+
+import java.util.List;
+
+import com.example.demo.payloads.CategoryDto;
+
+public interface CategoryRepo {
+	//create
+	 CategoryRepo createCategory(CategoryDto categoryDto);
+//update
+	 CategoryRepo updateCategory(CategoryDto categoryDto);
+//delete
+	 public void deleteCategory(Integer categoryId);
+	 //get
+	 public CategoryDto getCategory();
+	 
+	 //get all
+	 List<CategoryDto> getCategories();
+}
