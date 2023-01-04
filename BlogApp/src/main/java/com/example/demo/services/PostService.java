@@ -3,6 +3,7 @@ import java.util.List;
 
 import com.example.demo.entities.Post;
 import com.example.demo.payloads.PostDto;
+import com.example.demo.payloads.PostResponse;
 
 public interface PostService {
 	//create
@@ -16,7 +17,7 @@ public interface PostService {
 	void deletePost(Integer postId);
 	
 	//get all post
-	List<PostDto> getAllPost();
+	PostResponse getAllPost(Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
 	
 	//get single post
 	PostDto getPostById(Integer postId);
@@ -28,7 +29,7 @@ public interface PostService {
 	List<PostDto> getPostByUser(Integer userId);
 	
 	//seacrh post 
-	List<Post> searchPost(String Keyword);
+	List<PostDto> searchPost(String Keyword);
  	
 	
 

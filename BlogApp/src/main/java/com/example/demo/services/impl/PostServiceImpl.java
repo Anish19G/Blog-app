@@ -1,11 +1,15 @@
 package com.example.demo.services.impl;
 
+import java.awt.print.Pageable;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Category;
@@ -13,6 +17,7 @@ import com.example.demo.entities.Post;
 import com.example.demo.entities.User;
 import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.payloads.PostDto;
+import com.example.demo.payloads.PostResponse;
 import com.example.demo.repositories.CategoryRepo;
 import com.example.demo.repositories.PostRepo;
 import com.example.demo.repositories.UserRepo;
@@ -29,6 +34,7 @@ public class PostServiceImpl implements PostService {
 	private UserRepo userRepo;
 	@Autowired
 	private CategoryRepo categoryRepo;
+	private List<PostDto> collect;
 	@Override
 	public PostDto creatPost(PostDto postDto, Integer userId, Integer categoryId) {
 		User user = this.userRepo.findById(userId).orElseThrow(()->new ResourceNotFoundException("User", "User id", userId));
@@ -63,12 +69,23 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> getAllPost() {
-		List<Post> allPosts = this.postRepo.findAll();
+	public PostResponse getAllPost(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
+		Sort sort = (sortDir.equalsIgnoreCase("asc")?Sort.by(sortBy).ascending():Sort.by(sortBy).descending());
+
+		org.springframework.data.domain.Pageable p = PageRequest.of(pageNumber, pageSize, sort);
+		Page<Post> pagePost = this.postRepo.findAll(p);
+		List<Post> allPosts = pagePost.getContent();  
 		// TODO Auto-generated method stub
 		List<PostDto> postDtos = allPosts.stream().map((post)-> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+		PostResponse postResponse = new PostResponse();
+		postResponse.setContent(postDtos);
+		postResponse.setPageNumber(pagePost.getNumber());
+		postResponse.setPageSize(pagePost.getSize());
+		postResponse.setTotalElements(pagePost.getTotalElements());
+		postResponse.setTotalPages(pagePost.getTotalPages());
+		postResponse.setLastPage(pagePost.isLast());
 		
-		return postDtos;
+		return postResponse;
 	}
 
 	@Override
@@ -92,16 +109,17 @@ public class PostServiceImpl implements PostService {
 	public List<PostDto> getPostByUser(Integer userId) {
 		// TODO Auto-generated method stub
 		User user = this.userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User", "userId", userId));
-		List<Post> posts = this.postRepo.findByUser(user);
+		List<Post> posts = this.postRepo.findByUser(user); 
 		List<PostDto> postDtos = posts.stream().map((post)->this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
 		
 		return postDtos;
 	}
 
 	@Override
-	public List<Post> searchPost(String Keyword) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<PostDto> searchPost(String Keyword) {
+		List<Post> posts = this.postRepo.findByTitleContaining("%" + Keyword + "%");
+		List<PostDto> postDtos = posts.stream().map((post)-> this.modelMapper.map(posts, PostDto.class)).collect(Collectors.toList());
+		return postDtos;
 	}
 
 }
